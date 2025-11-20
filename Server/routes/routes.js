@@ -38,6 +38,6 @@ router.post("/add", upload.single("imageFile"), async (req, res) => {
     }
 });
 
-router.get('/all', getStudent);
+router.get('/all', getItems);
 
 module.exports = router;

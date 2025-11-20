@@ -9,7 +9,7 @@ export const addStudent = async (data) => {
         console.log("Error While Connecting API", error);
     }
 }
-export const getStudents = async () => {
+export const getItems = async () => {
     try {
         return await axios.get(`${URL}/all`)
     } catch (error) {

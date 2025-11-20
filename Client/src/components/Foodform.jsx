@@ -43,8 +43,6 @@ const Foodform = () => {
       }));
       if (imagePreviewUrl) URL.revokeObjectURL(imagePreviewUrl);
       setImagePreviewUrl("");
-
-      //   setImagePreviewUrl("");
     }
   };
   const showError = (msg) => {
@@ -118,10 +116,10 @@ const Foodform = () => {
         itemdata.append("imageFile", formData.imageFile); // MUST match upload.single('imageFile')
         const res = await addStudent(itemdata);
         if (res && res.status === 201) {
-          alert("Inserted Successfully");
+          showError("Inserted Successfully");
           setTimeout(function () {
             window.location.reload();
-          },2000);
+          }, 2000);
         } else {
           console.log("Insert Failed:", res);
         }
