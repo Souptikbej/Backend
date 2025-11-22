@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { getItems } from "../services/api";
-import { NavLink } from "react-router-dom";
 
 const getFoodTypeInfo = (type) => {
   return type === "veg"
@@ -110,7 +109,13 @@ const Fooddisplay = () => {
                   ${item.price.toFixed(2)}
                 </p>
                 <div className="flex space-x-2">
-                  <NavLink to={`/edit/${item._id}`}>
+                  <button className="px-3 py-1 text-xs text-white bg-blue-500 rounded-full shadow-md hover:bg-blue-600">
+                    Edit
+                  </button>
+                  <button className="px-3 py-1 text-xs text-white bg-red-500 rounded-full shadow-md hover:bg-red-600">
+                    Delete
+                  </button>
+                  {/* <NavLink to={`/edit/${item._id}`}>
                     <button className="px-3 py-1 text-xs text-white bg-blue-500 rounded-full shadow-md hover:bg-blue-600">
                       Edit
                     </button>
@@ -119,7 +124,7 @@ const Fooddisplay = () => {
                     <button className="px-3 py-1 text-xs text-white bg-red-500 rounded-full shadow-md hover:bg-red-600">
                       Delete
                     </button>
-                  </NavLink>
+                  </NavLink> */}
                 </div>
               </div>
             </div>
