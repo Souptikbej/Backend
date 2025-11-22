@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getItems } from "../services/api";
+import { getItems, deleteStudent } from "../services/api";
 
 const getFoodTypeInfo = (type) => {
   return type === "veg"
@@ -21,9 +21,8 @@ const Fooddisplay = () => {
     setLoading(false);
   };
 
-  useEffect(() => {
-    getallItems();
-  }, []);
+ 
+  
 
   // Calculate total pages
   const totalPages = Math.ceil(item.length / itemsPerPage);
@@ -37,6 +36,18 @@ const Fooddisplay = () => {
   const goToPage = (page) => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
+    }
+  };
+  const deleteItem = async (e) => {
+    try {
+      const res = await deleteStudent({ id: e });
+      if (res.status === 201) {
+        alert("STudent Record has been deleted !");
+      } else {
+        alert("Something Went Wrong");
+      }
+    } catch (error) {
+      console.log("Error While Delete data", error);
     }
   };
 
