@@ -20,11 +20,13 @@ export const getItems = async () => {
 };
 
 
-export const deleteStudent = async () => {
-    try {
-        return await axios.get(`${URL}/delete`, data)
-    } catch (error) {
-        console.log("Error while getting data", error);
-    }
-}
+export const getItemById = async (id) => {
+    const res = await axios.get(`${URL}/item/${id}`);
+    return res.data;
+};
 
+export const updateItem = async (id, formData) => {
+    return await axios.put(`${URL}/item/${id}`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+    });
+};

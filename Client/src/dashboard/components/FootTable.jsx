@@ -6,7 +6,7 @@ const getFoodTypeInfo = (type) => {
     : { badge: "bg-red-100 text-red-800", emoji: "🥩" };
 };
 
-const FoodTable = ({ foods, loading, onDelete }) => {
+const FoodTable = ({ foods, loading, openEditModal }) => {
   return (
     <div className="bg-white p-6 rounded-xl shadow-lg">
       <h2 className="text-xl font-bold mb-4">Food Items ({foods.length})</h2>
@@ -69,7 +69,10 @@ const FoodTable = ({ foods, loading, onDelete }) => {
 
                   <td className="p-2 border text-center">
                     <div className="flex justify-center space-x-2">
-                      <button className="px-3 py-1 text-xs text-white bg-blue-500 rounded-full hover:bg-blue-600">
+                      <button
+                        onClick={() => openEditModal(item._id)}
+                        className="px-3 py-1 text-xs text-white bg-blue-500 rounded-full hover:bg-blue-600"
+                      >
                         Edit
                       </button>
 

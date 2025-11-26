@@ -1,13 +1,14 @@
 const express = require("express");
 const Items = require("../schema/item.schema.js");
 const multer = require("multer");
-const { getItems } = require("../controller/product-controller.js");
+const { getItems, updateItem, getItemById } = require("../controller/product-controller.js");
+//  FIXED ↑↑
 const router = express.Router();
 
 // Multer Storage
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, "uploads"); // folder MUST exist
+        cb(null, "uploads");
     },
     filename: function (req, file, cb) {
         cb(null, Date.now() + "-" + file.originalname);
@@ -16,6 +17,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
+// Add Item
 router.post("/add", upload.single("imageFile"), async (req, res) => {
     try {
         const fileName = req.file ? req.file.filename : null;
@@ -38,6 +40,11 @@ router.post("/add", upload.single("imageFile"), async (req, res) => {
     }
 });
 
+// UPDATE ITEM
+router.put("/:id", upload.single("image"), updateItem);
+router.get("/:id", getItemById);
+
+// GET ALL ITEMS
 router.get('/all', getItems);
 
 module.exports = router;

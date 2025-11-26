@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from "react";
 import AdminLayout from "../layout/AdminLayout";
-import { getItems, deleteStudent } from "../services/foodApi.js"; // update API if needed
+import { getItems } from "../services/foodApi.js"; // update API if needed
 import FoodTable from "../components/FootTable.jsx";
-
+import EditModal from "./EditModal.jsx";
 const FoodList = () => {
   const [foods, setFoods] = useState([]);
   const [loading, setLoading] = useState(true);
-
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
-
+  const totalPages = Math.ceil(foods.length / itemsPerPage); // Pagination calculation
   const loadData = async () => {
     try {
       const res = await getItems();
@@ -25,20 +24,37 @@ const FoodList = () => {
     loadData();
   }, []);
 
-  // Pagination calculation
-  const totalPages = Math.ceil(foods.length / itemsPerPage);
+  const [editId, setEditId] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+
+  const openEditModal = (id) => {
+    setEditId(id);
+    setShowModal(true);
+  };
+
+  const closeEditModal = () => {
+    setShowModal(false);
+    setEditId(null);
+  };
 
   const paginatedFoods = foods.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
-
   return (
     <AdminLayout title="Food List">
       <FoodTable
         foods={paginatedFoods}
         loading={loading}
+        openEditModal={openEditModal}
       />
+      {showModal && (
+        <EditModal
+          itemId={editId}
+          closeModal={closeEditModal}
+          refreshItems={loadData}
+        />
+      )}
       {/* PAGINATION UI */}
       {foods.length > itemsPerPage && (
         <div className="flex justify-center mt-6 space-x-2">

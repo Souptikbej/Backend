@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AdminLayout from "../layout/AdminLayout";
 import { addFood } from "../services/foodApi";
 
-const AddFood = () => {
+const AddFood = ({ editItem, clearEdit }) => {
   const [formData, setFormData] = useState({
     foodName: "",
     price: "",
@@ -50,6 +50,11 @@ const AddFood = () => {
     if (file) {
       const previewURL = URL.createObjectURL(file);
       setImagePreview(previewURL);
+      useEffect(() => {
+        if (editItem) {
+          setImagePreview(editItem.imageFile);
+        }
+      }, [editItem]);
     }
   };
 
@@ -81,7 +86,6 @@ const AddFood = () => {
       fd.append("category", formData.category);
       fd.append("foodType", formData.foodType);
       fd.append("imageFile", formData.imageFile);
-
       const res = await addFood(fd);
 
       if (res && res.status === 201) {
@@ -237,7 +241,14 @@ const AddFood = () => {
                   : "bg-blue-300 cursor-not-allowed"
               }`}
             >
-              {isLoading ? "Adding..." : "Save Food"}
+              {/* {isLoading ? "Adding..." : "Save Food"} */}
+              {isLoading
+                ? editItem
+                  ? "Updating..."
+                  : "Adding..."
+                : editItem
+                ? "Update Food"
+                : "Save Food"}
             </button>
 
             {/* Reset */}
@@ -248,6 +259,15 @@ const AddFood = () => {
             >
               Reset
             </button>
+            {editItem && (
+              <button
+                type="button"
+                onClick={clearEdit}
+                className="flex-1 py-3 rounded-lg bg-yellow-200 hover:bg-yellow-300 font-semibold text-gray-800"
+              >
+                Cancel Edit
+              </button>
+            )}
           </div>
         </form>
       </div>

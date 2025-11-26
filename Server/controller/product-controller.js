@@ -18,22 +18,38 @@ const getItems = async (req, res) => {
         console.log("Error While Getting Data", error);
     }
 }
-
-const deleteItems = async (req, res) => {
+const getItemById = async (req, res) => {
     try {
-        const delitems = await Items.deleteOne({ _id: req.body._id });
-        if (delitems) {
-            res.status(200).json("Itmes Data Not Found");
-        }
-        else {
-            res.status(500).json("Data Not Found");
-        }
+        const item = await Items.findById(req.params.id);
+        if (!item) return res.status(404).json({ error: "Item not found" });
 
+        res.json(item);
     } catch (error) {
-        console.log("Error While Deleting  Data", error);
+        res.status(500).json({ error: "Server Error" });
     }
-}
+};
+const updateItem = async (req, res) => {
+    const { name, price } = req.body;
+
+    const updateData = { name, price };
+
+    if (req.file) {
+        updateData.imageFile = req.file.filename; // FIXED field name
+    }
+
+    const updated = await Items.findByIdAndUpdate(
+        req.params.id,
+        updateData,
+        { new: true }
+    );
+
+    res.json({
+        message: "Item updated successfully",
+        data: updated
+    });
+};
+
 
 module.exports = {
-    getItems
+    getItems, updateItem, getItemById
 }
